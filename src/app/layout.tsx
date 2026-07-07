@@ -1,9 +1,17 @@
-import type { Metadata } from 'next';
-import './globals.css';
+import type { Metadata } from "next";
+import { Geist } from "next/font/google";
+import { Shell } from "@/components/shell";
+import "./globals.css";
+
+const geist = Geist({
+  variable: "--font-geist",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: 'FashionHero - Size Twin',
-  description: 'Prototyp FashionHero z funkcjonalnością Size Twin.',
+  title: "FashionHero — Comfortable, Sustainable Shoes",
+  description:
+    "Sustainable, supportive, and wildly comfortable shoes made from natural materials.",
 };
 
 export default function RootLayout({
@@ -12,9 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl">
-      <body className="antialiased min-h-screen">
-        {children}
+    <html lang="en" className={`${geist.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col">
+        <Shell>{children}</Shell>
       </body>
     </html>
   );

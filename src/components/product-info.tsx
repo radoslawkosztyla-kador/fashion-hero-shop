@@ -9,6 +9,7 @@ import { SizeSelector } from "@/components/size-selector";
 import { useCart } from "@/components/cart-provider";
 import { WishlistButton } from "@/components/wishlist-button";
 import { ViewersWidget } from "@/components/viewers-widget";
+import { SizeTwinModal } from "@/components/features/SizeTwinModal";
 import { getSellerById } from "@/data/sellers";
 
 interface ProductInfoProps {
@@ -59,6 +60,13 @@ function getEstimatedDelivery(): string {
 export function ProductInfo({ product }: ProductInfoProps) {
   const [selectedColor, setSelectedColor] = useState<ProductColor>(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const [isSizeTwinOpen, setIsSizeTwinOpen] = useState(false);
+  const [sizeTwinRecommendation, setSizeTwinRecommendation] = useState<number | null>(null);
+
+  const handleApplySizeTwin = (size: number) => {
+    setSelectedSize(size);
+    setSizeTwinRecommendation(size);
+  };
   const { addItem } = useCart();
 
   const stock = useMemo(() => getStockInfo(product.id), [product.id]);
@@ -162,6 +170,30 @@ export function ProductInfo({ product }: ProductInfoProps) {
         sizes={product.sizes}
         selectedSize={selectedSize}
         onSelect={setSelectedSize}
+      />
+
+      {sizeTwinRecommendation && selectedSize === sizeTwinRecommendation && (
+        <div className="flex items-center gap-2 text-[12px] text-[#1A6B3A] font-medium mt-[-10px] mb-2">
+          <div className="flex items-center justify-center w-4 h-4 rounded-full bg-[#1A6B3A] text-white text-[10px]">✓</div>
+          US {sizeTwinRecommendation} — rozmiar dobrany przez Size Twin
+        </div>
+      )}
+
+      {/* Size Twin Trigger */}
+      <div className="flex items-center gap-3 py-3 px-4 bg-[#EDF5F0] border border-[#C6E0D0] mt-[-10px] mb-2 rounded-md">
+        <div className="text-[10px] font-bold tracking-widest text-white bg-[#1A6B3A] px-2 py-1 rounded-sm">SIZE TWIN</div>
+        <button 
+          onClick={() => setIsSizeTwinOpen(true)}
+          className="text-[13px] text-[#1A6B3A] font-medium underline underline-offset-4 decoration-1"
+        >
+          Nie wiesz jaki rozmiar? Dobierz idealny →
+        </button>
+      </div>
+      
+      <SizeTwinModal 
+        isOpen={isSizeTwinOpen} 
+        onClose={() => setIsSizeTwinOpen(false)} 
+        onApplySize={handleApplySizeTwin}
       />
 
       {/* Live viewers */}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { brands, BrandKey, calculateSizeFromBrand, calculateSizeFromFoot } from '../lib/sizingLogic';
+import { brands, BrandKey, calculateSizeFromBrand, calculateSizeFromFoot } from '@/lib/sizingLogic';
 
 type SizeTwinModalProps = {
   isOpen: boolean;
